@@ -19,9 +19,9 @@ export class Population {
         
         for (let i = 0; i < chromosomeLength; i++) {
             if (0.5 < Math.random()) {
-                chromosome[i] = 1
+                chromosome.push(1)
             } else {
-                chromosome[i] = 0
+                chromosome.push(0)
             }
         }
 
