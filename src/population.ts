@@ -9,12 +9,12 @@ export class Population {
 
         if (chromosomeLength) {
             for (let i = 0; i < populationSize; i++) {
-                this.population.push(this._initChromosome(chromosomeLength))
+                this.population.push(this.initChromosome(chromosomeLength))
             }
         }
     }
 
-    _initChromosome(chromosomeLength: number): number[] {
+    private initChromosome(chromosomeLength: number): number[] {
         const chromosome = []
         
         for (let i = 0; i < chromosomeLength; i++) {
