@@ -8,4 +8,13 @@ const heuristic = (a, b): number => {
 
 const aStarSearch = (graph, start: number[], goal: number[]) => {
     const frontier = new PriorityQueue()
+    for(let i = 0; i < start.length; i++) {
+        frontier.push(start[i])
+    }
+    let came_from = {}
+    let cost_so_far = {}
+
+    while (!frontier.length) {
+        
+    }
 }
