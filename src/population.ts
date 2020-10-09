@@ -27,9 +27,9 @@ export class Population {
             } else if (0.25 < rng && rng <= 0.5) {
                 chromosome.push(DOWN)
             } else if (0.5 < rng && rng <= 0.75) {
-                chromosome.push()
+                chromosome.push(LEFT)
             } else if (0.75 < rng && rng <= 1) {
-                chromosome.push('RIGHT')
+                chromosome.push(RIGHT)
             }
         }
 
