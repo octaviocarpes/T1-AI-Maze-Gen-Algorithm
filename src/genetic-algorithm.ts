@@ -11,7 +11,7 @@ export class GeneticAlgorithm {
     tamanhoTorneio: number
 
 
-    constructor(populationSize: number, mutationRate: number, crossoverRate: number, elitismCount: number, tamanhoTorneio number) {
+    constructor(populationSize: number, mutationRate: number, crossoverRate: number, elitismCount: number, tamanhoTorneio : number) {
         this.populationSize = populationSize
         this.mutationRate = mutationRate
         this.crossoverRate = crossoverRate
