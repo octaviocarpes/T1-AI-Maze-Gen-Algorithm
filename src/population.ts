@@ -22,7 +22,8 @@ export class Population {
     return this.population;
   }
 
-  public getMelhorCromossomo(): Cromossomo {
+  public getMelhorCromossomo(): Cromossomo { // fazer um bubblesort aqui melhor pro pior (ordena o array de cromossomos do melhor pro pior (fitness) e deve)
+    // e retorna a posicao do array ordenado, isneriada no parametro que deve existir
     let melhorCromossomo: Cromossomo = this.population[0];
 
     for (let i = 1; i < this.population.length; i++) {

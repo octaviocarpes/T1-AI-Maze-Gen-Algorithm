@@ -8,7 +8,7 @@ const { UP, DOWN, LEFT, RIGHT } = MOVES;
  * esse valor vai ser chumbado no código, outra alternativa seria criar um for e ler todas as posições vazias
  */
 export class Cromossomo {
-  cromossomo: string[];
+  cromossomo: string[]; 
   fitness: number = -999;
 
   constructor(tamanhoCromossomo?: number, cromossomo?: string[]) {
@@ -54,7 +54,7 @@ export class Cromossomo {
     this.cromossomo[posicao] = novoGene;
   }
 
-  public setFitness(novaFitness: number) {
+  public setFitness(novaFitness: number) : void {
     this.fitness = novaFitness;
   }
 

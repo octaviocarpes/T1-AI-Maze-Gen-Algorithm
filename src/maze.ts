@@ -41,8 +41,22 @@ export class Maze {
     return this.structure[linha][coluna];
   }
 
-  public ehParede(linha: number, coluna: number): boolean {
+  private ehParede(linha: number, coluna: number): boolean {
     if (this.structure[linha][coluna] === "1") {
+      return true;
+    }
+    return false;
+  }
+
+  private withinBounds(linha: number, coluna: number): boolean {
+    if (linha < 0 || linha > 11 || coluna < 0 || coluna > 11) {
+      return false;
+    }
+    return true;
+  }
+
+  public validateMazePosition(linha: number, coluna: number): boolean {
+    if (this.ehParede(linha, coluna) && this.withinBounds(linha, coluna)) {
       return true;
     }
     return false;
@@ -51,9 +65,8 @@ export class Maze {
   /** Criar metodo para avaliação de posicao certas
    * 0 em sequencias
    */
-  public calcularPontuacaoRota(rota: string[]) {
+  public calcularPontuacaoRota(rota: number[][]) : number {
     let pontuacao: number = 0;
-
-
+    return pontuacao;
   }
 }
