@@ -1,6 +1,6 @@
-import { MOVES } from "./constantes";
+import { MOVIMENTOS } from "./constantes";
 
-const { UP: UP, DOWN: DOWN, LEFT :LEFT, RIGHT: RIGHT } = MOVES;
+const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIMENTOS;
 
 /** Classe para representar o cromosso da populacao,
  * cada posição do array é um genes
@@ -22,13 +22,13 @@ export class Cromossomo {
       for (let i = 0; i < tamanhoCromossomo; i++) {
         const rng = Math.random();
         if (rng <= 0.25) {
-          this.cromossomo.push(UP);
+          this.cromossomo.push(CIMA);
         } else if (0.25 < rng && rng <= 0.5) {
-          this.cromossomo.push(DOWN);
+          this.cromossomo.push(BAIXO);
         } else if (0.5 < rng && rng <= 0.75) {
-          this.cromossomo.push(LEFT);
+          this.cromossomo.push(ESQUERDA);
         } else if (0.75 < rng && rng <= 1) {
-          this.cromossomo.push(RIGHT);
+          this.cromossomo.push(DIREITA);
         }
       }
     }
@@ -56,9 +56,5 @@ export class Cromossomo {
 
   public setFitness(novaFitness: number) : void {
     this.fitness = novaFitness;
-  }
-
-  public printCromossomo() {
-    console.log(this.cromossomo);
   }
 }

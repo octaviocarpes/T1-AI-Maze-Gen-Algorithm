@@ -1,45 +1,37 @@
-import { sys } from "typescript";
-import { MOVES } from "./constantes";
+import { MOVIMENTOS } from "./constantes";
 import { Cromossomo } from "./cromossomo";
 import { Labirinto } from "./labirinto";
 
+const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIMENTOS;
 
 /** Classe responsável para representar o comportamento do agente dentro do labirinto*/
 export class Agente {
-  x_coordinate: number = 0;
-  y_coordinate: number = 0;
-  movimentos: number = 0;
-  quantidadeMaximaDeMovimentos: number;
-  maze: Labirinto;
-  gene: number = 0;
+  coordenada_x: number = 0; // Pega a posicao inicial da entrada do labirinto (chumbado) - X - EIXO CIMA / BAIXO
+  coordenada_y: number = 0; // Pega a posicao inicial da entrada do labirinto (chumbado) - Y - EIXO DIREITA / ESQUERDA
+  labirinto: Labirinto;
+  posicaoGene: number = 0;
   cromossomo: Cromossomo;
-  rota: number[][] = [[0, 0]]; // posicao inicial 'E' do labirinto
-  ultima_direcao?: String;
+  rota: number[][] = [[0, 0]]; // posicao inicial 'E' do labirinto (chumbada)
   caminhoInvalido : boolean = false;
 
-  constructor(cromossomo: Cromossomo, maze: Labirinto, movimentosMaximo: number) {
+  constructor(cromossomo: Cromossomo, maze: Labirinto) {
     this.cromossomo = cromossomo;
-    this.quantidadeMaximaDeMovimentos = movimentosMaximo;
-    this.maze = maze;
+    this.labirinto = maze;
   }
 
-  public executar(): void {
+  public executar(): boolean {
 
     while (true) {
 
-      this.movimentos++;
-
-      if (this.maze.getValorDaPosicao(this.x_coordinate, this.y_coordinate) === "S" ) {
+      // Verifica se achou a saída do labirinto
+      if (this.labirinto.getValorDaPosicao(this.coordenada_x, this.coordenada_y) === "S" ) {
         console.log(this.rota)
-        return;
+        return true;
       }
 
+      // Verifica se o agente conseguiu andar ou não
       if (this.caminhoInvalido) {
-        return;
-      }
-
-      if (this.movimentos > this.quantidadeMaximaDeMovimentos) {
-        return;
+        return false;
       }
 
       this.caminhar();
@@ -48,55 +40,52 @@ export class Agente {
 
   public caminhar() : void{
 
-    let posicaoAtual_X : number = this.x_coordinate;
-    let posicaoAtual_Y : number = this.y_coordinate;
-
     let andou : boolean = false;
+    let proximaDirecao: string = this.getProximoGene();
 
-    let direcao: string = this.getProximoCaminhoCromossomo();
-
-    if (direcao === "LEFT") {
-      if (this.maze.validacao(posicaoAtual_X, posicaoAtual_Y - 1)) {
-          this.y_coordinate--;
+    if (proximaDirecao === ESQUERDA) {
+      if (this.labirinto.validaPosicao(this.coordenada_x, this.coordenada_y - 1)) {
+          this.coordenada_y--;
           andou = true;
-        // console.log("LEFT", this.x_coordinate, this.y_coordinate);
+        // console.log("ESQUERDA", this.x_coordinate, this.y_coordinate);
       }
-    } else if (direcao === "RIGHT") {
-      if (this.maze.validacao(posicaoAtual_X, posicaoAtual_Y + 1)) {
-          this.y_coordinate++;
+
+    } else if (proximaDirecao === DIREITA) {
+      if (this.labirinto.validaPosicao(this.coordenada_x, this.coordenada_y + 1)) {
+          this.coordenada_y++;
           andou = true;
-
-
-        //  console.log("RIGHT", this.x_coordinate, this.y_coordinate);
+          //console.log("DIREITA", this.x_coordinate, this.y_coordinate);
       }
-    } else if (direcao === "DOWN") {
-      if (this.maze.validacao(posicaoAtual_X + 1, posicaoAtual_Y)) {
-          this.x_coordinate++;
+
+    } else if (proximaDirecao === BAIXO) {
+      if (this.labirinto.validaPosicao(this.coordenada_x + 1, this.coordenada_y)) {
+          this.coordenada_x++;
           andou = true;
-
-          //console.log("DOWN", this.x_coordinate, this.y_coordinate);
- 
+          //console.log("BAIXO", this.x_coordinate, this.y_coordinate);
       }
-    } else if (direcao === "UP") {
-      if (this.maze.validacao(posicaoAtual_X - 1, posicaoAtual_Y)) {
-          this.x_coordinate--;
+
+    } else if (proximaDirecao === CIMA) {
+      if (this.labirinto.validaPosicao(this.coordenada_x - 1, this.coordenada_y)) {
+          this.coordenada_x--;
           andou = true;
-
-        // console.log("UP", this.x_coordinate, this.y_coordinate);
+          //console.log("CIMA", this.x_coordinate, this.y_coordinate);
       }
-    }
 
-  //  if (this.x_coordinate !== posicaoAtual_X || this.y_coordinate !== posicaoAtual_Y) {
-    if(andou) {
-      this.rota.push([this.x_coordinate, this.y_coordinate]);
     } else {
-        this.caminhoInvalido = false;
+      this.caminhoInvalido = true;
     }
 
+    //Se conseguiu caminhar registra o caminho nas rotas
+    // Necessario para evitar repetição de codigo tanto no cruzamento / mutação
+    // fazendo decode do cromossomo para verificar o tamanho válido e retirar o restante
+    // desta forma temos como calcular a aptidão pelo o tamanho da rota válida
+    if (andou) {
+      this.rota.push([this.coordenada_x, this.coordenada_y]);
+    }
   }
 
-  public getProximoCaminhoCromossomo() {
-    let gene: string = this.cromossomo.getGene(this.gene++);
+  public getProximoGene() {
+    let gene: string = this.cromossomo.getGene(this.posicaoGene++);
     return gene;
   }
 

@@ -2,6 +2,9 @@ import { Agente } from "./agente"
 import { Cromossomo } from "./cromossomo"
 import { Labirinto } from "./labirinto"
 import { Population as Populacao } from "./populacao"
+import { MOVIMENTOS } from "./constantes";
+
+const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIMENTOS;
 
 export class GeneticAlgorithm {
     tamanhoDaPopulacao: number
@@ -10,35 +13,36 @@ export class GeneticAlgorithm {
     contadorDeElitismo: number
     tamanhoTorneio: number
 
-
-    constructor(populationSize: number, mutationRate: number, crossoverRate: number, elitismCount: number, tamanhoTorneio : number) {
-        this.tamanhoDaPopulacao = populationSize
-        this.taxaDeMutacao = mutationRate
-        this.taxaDeCruzamento = crossoverRate
-        this.contadorDeElitismo = elitismCount
+    constructor(tamanhoDaPopulacao: number, taxaDeMutacao: number, taxaDeCruzamento: number, contadorDeElitismo: number, tamanhoTorneio : number) {
+        this.tamanhoDaPopulacao = tamanhoDaPopulacao
+        this.taxaDeMutacao = taxaDeMutacao
+        this.taxaDeCruzamento = taxaDeCruzamento
+        this.contadorDeElitismo = contadorDeElitismo
         this.tamanhoTorneio = tamanhoTorneio
     }
 
-    public iniciarPopulacao(chromosomeLength: number): Populacao {
-        return new Populacao(this.tamanhoDaPopulacao, chromosomeLength)
+    public iniciarPopulacao(tamanhoDoCromossomo: number): Populacao {
+        return new Populacao(this.tamanhoDaPopulacao, tamanhoDoCromossomo)
     }
 
-    public calculoDeAptidao(labirinto: Labirinto, cromossomo: Cromossomo) : number {
+    public calculoDeAptidao(labirinto: Labirinto, cromossomo: Cromossomo) : boolean {
 
-      let agente : Agente = new Agente(cromossomo, labirinto, 120)
-      agente.executar()
-      let aptidao : number = labirinto.calcularPontuacaoRota(agente.getRota()) // calcular ciclos (penalizar), parede ele nao vai se mexer
+      let agente : Agente = new Agente(cromossomo, labirinto)
+      let achouSaida : boolean = agente.executar()
+      let aptidao : number = labirinto.calculaPontuacao(agente.getRota()) // calcular ciclos (penalizar), parede ele nao vai se mexer
 
       cromossomo.setFitness(aptidao);
 
-      return aptidao;
-
+      return achouSaida;
     }
 
-    public avaliacao(labirinto: Labirinto, populacao: Populacao, ) : void {
+    public avaliacao(labirinto: Labirinto, populacao: Populacao, ) : boolean {
         for (let i = 0; i < populacao.getCromossomos().length; i++) {
-            this.calculoDeAptidao(labirinto, populacao.getCromossomo(i)) 
+            if(this.calculoDeAptidao(labirinto, populacao.getCromossomo(i))) {
+                return true;
+            } 
         }
+        return false;
     }
 
     public condicaoDeTerminioAtendida(contadorDeGeracoes: number, numeroMaximoDeGeracoes: number)  : boolean {
@@ -63,7 +67,7 @@ export class GeneticAlgorithm {
            let cromossomo : Cromossomo = populacao.getCromossomoComMelhorAptidao(posicaoCromossomo);
 
            //Movido para cima o for (antes do if devido a bug)
-           // Verificar se nao da para buscar a rota do cromosso, decodificar ela e  fazer a mutação em cima das posicoes que não condizem com um cmainho válido
+           //Refatorado, retirado repetição de código referente ao decodificador do cromossomo, pois a rota agora fica salva no próprio agente
            for (let posicaoGene = 0; posicaoGene < cromossomo.getTamanhoCromossomo(); posicaoGene++) {
                  if(posicaoCromossomo >= this.contadorDeElitismo) {
                     if(this.taxaDeMutacao > Math.random()) {
@@ -80,18 +84,15 @@ export class GeneticAlgorithm {
         return novaPopulacao;
     }
 
-
-
     private getDirecao(numero : number): string{
-        let novoGene : string = "UP"
-        const rng = Math.random();
+        let novoGene : string = CIMA
 
-        if (0.25 < rng && rng <= 0.5) {
-            novoGene = "DOWN"
-        } else if (0.5 < rng && rng <= 0.75) {
-            novoGene = "LEFT"
-        } else if (0.75 < rng && rng <= 1) {
-            novoGene = "RIGHT"
+        if (0.25 < numero && numero <= 0.5) {
+            novoGene = BAIXO
+        } else if (0.5 < numero && numero <= 0.75) {
+            novoGene = ESQUERDA
+        } else if (0.75 < numero && numero <= 1) {
+            novoGene = DIREITA
         }
          return novoGene;
     }
@@ -109,7 +110,8 @@ export class GeneticAlgorithm {
 
                 let pontoDeTroca : number = (Math.floor(Math.random() *(pai.getTamanhoCromossomo() + 1)))
 
-                /** Ver se aqui nao daria para pegar a rota e verificar o caminho válido, e apenas trocar os que não são (dá pra ver isso atraves das rotas que o agent percorreu) */
+                /** Ver se aqui nao daria para pegar a rota e verificar o caminho válido, e apenas trocar os que não são (dá pra ver isso atraves das rotas que o agente percorreu) */
+                // devido a inserção da rota no agente, não será mais necessário decodificar o cromossomo e validar os genes válidos para a solução e os que não são
                 for (let posicaoGene = 0; posicaoGene < pai.getTamanhoCromossomo(); posicaoGene++) {
                     if(posicaoGene < pontoDeTroca) {
                         filho.setGene(posicaoGene, pai.getGene(posicaoGene))
@@ -126,6 +128,5 @@ export class GeneticAlgorithm {
         }
 
         return novaPopulacao;
-
     }
 }

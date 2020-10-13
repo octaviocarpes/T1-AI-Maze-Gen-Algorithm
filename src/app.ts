@@ -12,22 +12,20 @@ let populacao: Populacao = algoritmoGenetico.iniciarPopulacao(128);
 algoritmoGenetico.avaliacao(labirinto, populacao)
 
 let geracao : number = 1;
+let achouSaida : boolean = false;
 
-/**  Conforme conversado com a professora, temos mias uma condição de parada que verifica se o score atingiu o valor ideal (A definir ainda) */
-while(algoritmoGenetico.condicaoDeTerminioAtendida(geracao, numeroMaximoGeracoes) === false) {
-    let cromossomo : Cromossomo = populacao.getCromossomoComMelhorAptidao(0);
+while(algoritmoGenetico.condicaoDeTerminioAtendida(geracao, numeroMaximoGeracoes) === false && achouSaida === false) {
 
     populacao = algoritmoGenetico.cruzemento(populacao)
     populacao = algoritmoGenetico.mutacao(populacao)
 
-    algoritmoGenetico.avaliacao(labirinto, populacao )
+    if (algoritmoGenetico.avaliacao(labirinto, populacao)) {
+        achouSaida = true;
+    }
 
     geracao++;
-
 }
 
 let cromossomo : Cromossomo = populacao.getCromossomoComMelhorAptidao(0);
 console.log(cromossomo.getCromossomo())
 
-let x : number = 0
-let y : number = 0
