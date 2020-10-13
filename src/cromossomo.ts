@@ -1,6 +1,6 @@
-import { MOVES } from "./constants";
+import { MOVES } from "./constantes";
 
-const { UP, DOWN, LEFT, RIGHT } = MOVES;
+const { UP: UP, DOWN: DOWN, LEFT :LEFT, RIGHT: RIGHT } = MOVES;
 
 /** Classe para representar o cromosso da populacao,
  * cada posição do array é um genes
@@ -9,7 +9,7 @@ const { UP, DOWN, LEFT, RIGHT } = MOVES;
  */
 export class Cromossomo {
   cromossomo: string[]; 
-  fitness: number = -999;
+  fitness: number = 0;
 
   constructor(tamanhoCromossomo?: number, cromossomo?: string[]) {
     this.cromossomo = [];

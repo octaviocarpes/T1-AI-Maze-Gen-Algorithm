@@ -1,20 +1,33 @@
-import { Maze } from "./maze";
-import { GeneticAlgorithm } from "./genetic-algorithm";
-import { Population } from "./population";
+import { Labirinto as Labirinto } from "./labirinto";
+import { GeneticAlgorithm as AlgoritmoGenetico } from "./algortimoGenetico";
+import { Population as Populacao } from "./populacao";
+import { Cromossomo } from "./cromossomo";
 
-/** Numero de gerações de gerações que serve como condição de parada, assim como no exemplo do dojo da aula */
-const numeroMaximoGeracoes: number = 500;
+/** Inicializacao de todo o algoritmo e estrutura */
+const numeroMaximoGeracoes: number = 1000;
+const labirinto = new Labirinto();
+const algoritmoGenetico = new AlgoritmoGenetico(200, 0.05, 0.9, 2, 10);
+let populacao: Populacao = algoritmoGenetico.iniciarPopulacao(128);
 
-/** Cria a classe do labirinto já lendo o txt e o populando, a clase ainda contém métodos de apoio da classe */
-const maze = new Maze();
+algoritmoGenetico.avaliacao(labirinto, populacao)
 
-/** Instancia o algoritmo genético, ontem tem os principais métodos do algoritmo (avaliação de aptidao, torneio, mutação, crossover) */
-// Populacao 100
-// Taxa de mutação = 20%
-// Taxa de crossover = 80%
-// Elitismo = 1
-const algoritmo = new GeneticAlgorithm(100, 0.2, 0.8, 1, 10);
+let geracao : number = 1;
 
-let popupacao: Population = algoritmo.initPopulation(100)
-console.log(alg.population);
-console.log(maze);
+/**  Conforme conversado com a professora, temos mias uma condição de parada que verifica se o score atingiu o valor ideal (A definir ainda) */
+while(algoritmoGenetico.condicaoDeTerminioAtendida(geracao, numeroMaximoGeracoes) === false) {
+    let cromossomo : Cromossomo = populacao.getCromossomoComMelhorAptidao(0);
+
+    populacao = algoritmoGenetico.cruzemento(populacao)
+    populacao = algoritmoGenetico.mutacao(populacao)
+
+    algoritmoGenetico.avaliacao(labirinto, populacao )
+
+    geracao++;
+
+}
+
+let cromossomo : Cromossomo = populacao.getCromossomoComMelhorAptidao(0);
+console.log(cromossomo.getCromossomo())
+
+let x : number = 0
+let y : number = 0

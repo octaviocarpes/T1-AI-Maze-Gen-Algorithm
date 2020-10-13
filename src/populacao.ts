@@ -1,4 +1,4 @@
-import { MOVES } from "./constants";
+import { MOVES } from "./constantes";
 import { Cromossomo } from "./cromossomo";
 
 const { UP, DOWN, LEFT, RIGHT } = MOVES;
@@ -22,24 +22,20 @@ export class Population {
     return this.population;
   }
 
-  public getMelhorCromossomo(): Cromossomo { // fazer um bubblesort aqui melhor pro pior (ordena o array de cromossomos do melhor pro pior (fitness) e deve)
-    // e retorna a posicao do array ordenado, isneriada no parametro que deve existir
-    let melhorCromossomo: Cromossomo = this.population[0];
+  /** Função de ordenamento em ordem decrescente do melhor pro pior */
+  public getCromossomoComMelhorAptidao(posicao : number): Cromossomo {
 
-    for (let i = 1; i < this.population.length; i++) {
-      if (melhorCromossomo.fitness < this.population[i].fitness) {
-        melhorCromossomo = this.population[i];
-      }
-    }
+    //let populacoOrdenada: Cromossomo[] = [...this.population]; // Codigo comentado para teste versão inloco e versão deepclone 
+    this.population.sort((a, b) => (a.fitness > b.fitness ? -1 : 1));
 
-    return melhorCromossomo;
+    return this.population[posicao]
   }
 
   public getPopulationFitness(): number {
     return this.populationFitness;
   }
 
-  public getSizePopulation(): number {
+  public getTamanho(): number {
     return this.population.length;
   }
 
@@ -55,7 +51,7 @@ export class Population {
     this.population[posicao] = novoCromossomo;
   }
 
-  public shuffle(): void {
+  public embaralhar(): void {
     const rng = Math.random();
 
     for (let i = this.population.length - 1; i > 0; i--) {
