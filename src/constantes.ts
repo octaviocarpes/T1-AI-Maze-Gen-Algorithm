@@ -1,0 +1,6 @@
+export const MOVIMENTOS = {
+  CIMA: 'CIMA',
+  BAIXO: 'BAIXO',
+  ESQUERDA: 'ESQUERDA',
+  DIREITA: 'DIREITA',
+}
