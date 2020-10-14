@@ -1,12 +1,21 @@
 import fs from 'fs'
 
+interface Posicao {
+    x: number, y: number
+}
 class Nodo {
     public filhos: number[][]
     public valor: string
+    public index: number
+    public posicao: Posicao
+    public visitado: boolean
 
-    constructor(valor: string, filhos: number[][]) {
+    constructor(valor: string, filhos: number[][], posicao: Posicao, visitado: boolean, index: number) {
         this.filhos = filhos
         this.valor = valor
+        this.index = index
+        this.posicao = posicao
+        this.visitado = visitado
     }
 }
 
@@ -18,10 +27,12 @@ export class Grafo {
         try {
             const dado = fs.readFileSync("src/maze.txt", { encoding: "utf-8" });
             const linhas = dado.split(/\r?\n/);
+            let index = -1
 
             for (let i = 0; i < linhas.length; i++) {
                 for (let j = 0; j < linhas.length; j++) {
-                    this.nodos.push(this.adicionaNodo(linhas, [i,j], linhas[i][j]))
+                    index++
+                    this.nodos.push(this.adicionaNodo(linhas, [i,j], linhas[i][j], index))
                 }
             }
         } catch (err) {
@@ -29,7 +40,7 @@ export class Grafo {
         }
     }
 
-    private adicionaNodo (linhas: string[], posicao: number[], valor: string): Nodo {
+    private adicionaNodo (linhas: string[], posicao: number[], valor: string, index: number): Nodo {
         const filhos: number[][] = []
         const cima = [posicao[0], posicao[1] - 1]
         const baixo = [posicao[0], posicao[1] + 1]
@@ -52,7 +63,7 @@ export class Grafo {
             filhos.push(direita)
         }
 
-        return new Nodo(valor, filhos)
+        return new Nodo(valor, filhos, { x: posicao[0], y: posicao[1] }, false, index)
     }
 
 }

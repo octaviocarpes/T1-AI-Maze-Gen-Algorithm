@@ -3,6 +3,7 @@ import { GeneticAlgorithm as AlgoritmoGenetico } from "./algortimoGenetico";
 import { Population as Populacao } from "./populacao";
 import { Cromossomo } from "./cromossomo";
 import { Grafo } from './grafo'
+import { procuraAestrela } from './a-star'
 
 /** Inicializacao de todo o algoritmo e estrutura */
 const numeroMaximoGeracoes: number = 1000;
@@ -11,6 +12,8 @@ const algoritmoGenetico = new AlgoritmoGenetico(200, 0.05, 0.9, 2, 10);
 let populacao: Populacao = algoritmoGenetico.iniciarPopulacao(128);
 
 const grafo = new Grafo()
+
+procuraAestrela(grafo, [0,0], [11,11])
 
 algoritmoGenetico.avaliacao(labirinto, populacao)
 
