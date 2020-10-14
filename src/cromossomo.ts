@@ -9,7 +9,7 @@ const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIM
  */
 export class Cromossomo {
   cromossomo: string[]; 
-  fitness: number = 0;
+  aptidao: number = 0;
 
   constructor(tamanhoCromossomo?: number, cromossomo?: string[]) {
     this.cromossomo = [];
@@ -46,15 +46,15 @@ export class Cromossomo {
     return this.cromossomo[posicao];
   }
 
-  public getFitness(): number {
-    return this.fitness;
-  }
-
   public setGene(posicao: number, novoGene: string) {
     this.cromossomo[posicao] = novoGene;
   }
 
-  public setFitness(novaFitness: number) : void {
-    this.fitness = novaFitness;
+  public getAptidao(): number {
+    return this.aptidao;
+  }
+
+  public setAptidao(novaFitness: number) : void {
+    this.aptidao = novaFitness;
   }
 }
