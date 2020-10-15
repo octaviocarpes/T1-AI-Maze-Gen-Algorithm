@@ -23,5 +23,5 @@ while(algoritmoGenetico.condicaoDeTerminioAtendida(geracao, numeroMaximoGeracoes
 }
 
 let cromossomo : Cromossomo = populacao.getCromossoMaisApto(0);
-console.log(cromossomo.getCromossomo())
 
+console.log(cromossomo.getCromossomo())
