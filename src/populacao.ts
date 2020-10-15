@@ -4,13 +4,13 @@ export class Population {
   populacao: Cromossomo[];
   tamanhoPopulacao: number;
 
-  constructor(tamanhoPopulacao: number, tamanhoDoCromossomo?: number) {
+  constructor(tamanhoPopulacao: number, tamanhoCromossomo?: number) {
     this.tamanhoPopulacao = tamanhoPopulacao;
     this.populacao = [];
 
-    if (tamanhoDoCromossomo) {
+    if (tamanhoCromossomo) {
       for (let i = 0; i < tamanhoPopulacao; i++) {
-        this.populacao.push(new Cromossomo(tamanhoDoCromossomo));
+        this.populacao.push(new Cromossomo(tamanhoCromossomo));
       }
     }
   }
@@ -20,11 +20,11 @@ export class Population {
   }
 
   /** Função de ordenamento em ordem decrescente do melhor pro pior */
-  public getCromossomoComMelhorAptidao(posicao : number): Cromossomo {
+  public getCromossoMaisApto(posicao : number): Cromossomo {
 
     //let populacoOrdenada: Cromossomo[] = [...this.population]; // Codigo comentado para teste versão inloco e versão deepclone 
-    this.populacao.sort((a, b) => (a.fitness > b.fitness ? -1 : 1));
-
+    this.populacao.sort((a, b) => (a.aptidao > b.aptidao ? -1 : 1));
+    
     return this.populacao[posicao]
   }
 
@@ -40,7 +40,9 @@ export class Population {
     this.populacao[posicao] = novoCromossomo;
   }
 
+  //Bagunça as posições para ser utilizada no torneio
   public embaralhar(): void {
+    
     const rng = Math.random();
 
     for (let i = this.populacao.length - 1; i > 0; i--) {
