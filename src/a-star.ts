@@ -8,7 +8,7 @@ const heuristica = (a: number[], b: number[]): number => {
     const y1 = a[1]
     const x2 = b[0]
     const y2 = b[1]
-    return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2))
+    return Math.abs((x2 - x1) + (y2 - y1))
 }
 
 export const procuraAestrela = (grafo: Grafo, inicio: number[], fim: number[]) => {
@@ -29,11 +29,9 @@ export const procuraAestrela = (grafo: Grafo, inicio: number[], fim: number[]) =
 
         if (!filhosAptos.length) {
             // procura por filhos aptos em nodos anteriores
-            while(!filhosAptos.length) {
-                veioDe = historico.pop()
-                if (veioDe) {
-                    filhosAptos = procuraFilhosAptos(veioDe.filhos, grafo)
-                }
+            veioDe = historico.pop()
+            if (veioDe) {
+                filhosAptos = veioDe.filhos
             }
 
             menorFilho = filhosAptos.reduce((filhoAnterior, proximoFilho) => {
@@ -82,4 +80,14 @@ const procuraNodo = (grafo: Grafo, x: number, y: number) => {
     return grafo.nodos
     .filter(nodo => nodo.posicao.x === x && nodo.posicao.y === y)
     .reduce((prev, next) => prev)
+}
+
+
+const desmarcaFilhos = (filhos: number[][], grafo: Grafo) => {
+    for(let i = 0; i < filhos.length; i++) {
+        for(let j = 0; j < filhos.length; j++) {
+            const nodo = procuraNodo(grafo, i, j)
+            grafo.nodos[nodo.index].visitado = false
+        }
+    }
 }
