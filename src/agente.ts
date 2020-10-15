@@ -1,7 +1,6 @@
 import { MOVIMENTOS } from "./constantes";
 import { Cromossomo } from "./cromossomo";
 import { Labirinto } from "./labirinto";
-
 const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIMENTOS;
 
 /** Classe responsável para representar o comportamento do agente dentro do labirinto*/
@@ -15,11 +14,13 @@ export class Agente {
   cromossomo: Cromossomo;
   rota: number[][] = [[0, 0]]; // posicao inicial 'E' do labirinto (chumbada)
   caminhoInvalidado : boolean = false;
+  public encontrouCaminho: boolean
 
   constructor(cromossomo: Cromossomo, maze: Labirinto, movimentosMaximo : number) {
     this.cromossomo = cromossomo;
     this.labirinto = maze;
     this.movimentosMaximo = movimentosMaximo;
+    this.encontrouCaminho = false
   }
 
   public executa(): void {
@@ -29,7 +30,7 @@ export class Agente {
 
       // Achou a saída do labirinto
       if (this.labirinto.getValorDaPosicao(this.coordenada_x, this.coordenada_y) === 'S') {
-         console.log(this.rota)
+         this.encontrouCaminho = true
          return;
       }
 

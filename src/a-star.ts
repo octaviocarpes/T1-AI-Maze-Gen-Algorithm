@@ -11,19 +11,19 @@ const heuristica = (a: number[], b: number[]): number => {
     return Math.abs((x2 - x1) + (y2 - y1))
 }
 
-export const procuraAestrela = (grafo: Grafo, inicio: number[], fim: number[]) => {
+export const procuraAestrela = (grafo: Grafo, inicio: number[], fim: number[]): string[] => {
     let veioDe = null
     let foiPara = null
     let nodoAtual = grafo.nodos[0]
     let historico = []
+    let trajeto: string[] = []
+    trajeto.push(`${inicio[0]}, ${inicio[1]}`)
 
     while(nodoAtual.valor !== 'S') {
         const filhos = nodoAtual.filhos
         let filhosAptos: number[][] = procuraFilhosAptos(filhos, grafo)
         veioDe = nodoAtual
         historico.push(veioDe)
-
-        
 
         let menorFilho: any;
 
@@ -59,10 +59,9 @@ export const procuraAestrela = (grafo: Grafo, inicio: number[], fim: number[]) =
         grafo.nodos[nodoAtual.index].visitado = true
         foiPara = nodoAtual
         
-        console.log(`Trajeto: ${veioDe?.posicao.x} , ${veioDe?.posicao.y} - ${foiPara.posicao.x}, ${foiPara.posicao.y}`)
-
-        console.log('\n')
+        trajeto.push(`${foiPara.posicao.x}, ${foiPara.posicao.y}`)
     }
+    return trajeto
 }
 
 const procuraFilhosAptos = (filhos: number[][], grafo: Grafo) => {

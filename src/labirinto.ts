@@ -107,6 +107,30 @@ export class Labirinto {
     return true;
   }
 
+  public construirRotaPorCromossomo(cromossomo: string[]): string[] {
+    let rota: string[] = []
+    let posicao = { x: 0, y: 0 }
+    rota.push('0, 0')
+
+    for(let i = 0; i < cromossomo.length; i++) {
+      if (cromossomo[i] === 'DIREITA') {
+        posicao.x += 1
+        rota.push(`${posicao.x}, ${posicao.y}`)
+      } else if (cromossomo[i] === 'BAIXO') {
+        posicao.y += 1
+        rota.push(`${posicao.x}, ${posicao.y}`)
+      } else if (cromossomo[i] === 'CIMA') {
+        posicao.y -= 1
+        rota.push(`${posicao.x}, ${posicao.y}`)
+      } else if (cromossomo[i] === 'ESQUERDA') {
+        posicao.x -= 1
+        rota.push(`${posicao.x}, ${posicao.y}`)
+      }
+    }
+
+    return rota
+  }
+
     /** Criar metodo para avaliação de posicao certas, baseada no tamanho da rota registrada e calculo de ciclos 
    * Com o metodo de calculo que valida a posicao com um array de booleanos, não é mais necessário essa função
   public calculaPontuacao2(rota: number[][]): number {

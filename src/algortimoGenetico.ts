@@ -12,6 +12,7 @@ export class GeneticAlgorithm {
     taxaCruzamento: number
     eletismo: number
     tamanhoTorneio: number
+    rota: number[][]
 
     constructor(tamanhoPopulacao: number, taxaMutacao: number, taxaCruzamento: number, eletismo: number, tamanhoTorneio : number) {
         this.tamanhoPopulacao = tamanhoPopulacao
@@ -19,6 +20,7 @@ export class GeneticAlgorithm {
         this.taxaCruzamento = taxaCruzamento
         this.eletismo = eletismo
         this.tamanhoTorneio = tamanhoTorneio
+        this.rota = []
     }
 
     public iniciarPopulacao(tamanhoCromossomo: number): Populacao {
@@ -33,6 +35,10 @@ export class GeneticAlgorithm {
       // Agente é o simulador, onde irá decodificar a direção e, caso válida a direção do movimento
       // seta o valor em um array que armazena as coordenadas das posições em que esta simulação caminhou no labirinto
       agente.executa()
+
+      if (agente.encontrouCaminho) {
+        this.rota = agente.rota
+      }
 
       //Calcula a rota através das rotas (coordenadas)
       let aptidao : number = labirinto.calculaRota(agente.getRota()) // calcular ciclos (penalizar), parede ele nao vai se mexer
