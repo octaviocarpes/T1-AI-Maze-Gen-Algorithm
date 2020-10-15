@@ -53,14 +53,6 @@ export class Labirinto {
     return false;
   }
 
-  /** Criar metodo para avaliação de posicao certas, baseada no tamanho da rota registrada e calculo de ciclos */
-  public calculaPontuacao2(rota: number[][]): number {
-    let pontuacao: number = rota.length
-
-    return this.temCiclos(rota, pontuacao);
-
-  }
-
   //Calcula para distância euclediana (serve como denominador da pontuação correspondente valor das posições válidas)
   private calculaDistanciaEuclediana(rota: number[][]): number {
 
@@ -79,7 +71,7 @@ export class Labirinto {
     let pontuacao: number = 0
 
     let visitado : boolean[][]  = [[], [], [], [], [], [], [], [], [], [], [], []];
-
+    
     for (let index = 0; index < rota.length; index++) {
       let coordenadas : number[] = rota[index]
       let direcao : string = this.matriz[coordenadas[0]][coordenadas[1]] 
@@ -102,22 +94,6 @@ export class Labirinto {
 
   }
 
-  // função que verifica se há clicos na rota
-  private temCiclos(rota: number[][], aptidao : number): number {
-    let pontuacao : number = aptidao;
-    for (let linha = 0; linha < rota.length; linha++) {
-      for (let outraLinha = 0; outraLinha < rota.length; outraLinha++) {
-        if (linha !== outraLinha) {
-          let temCiclo: boolean = this.verificaArraysIguals(rota[linha],rota[outraLinha]);
-          if (temCiclo) {
-            pontuacao-= 1;  // penaliza caso for posição inválida
-          }
-        }
-      }
-    }
-    return Math.round(pontuacao)
-  }
-
   //Função para verificar se ambas as coordenadas são iguais
   private verificaArraysIguals(array1: number[], array2: number[]): boolean {
     if (array1.length !== array2.length) {
@@ -131,6 +107,33 @@ export class Labirinto {
     return true;
   }
 
+    /** Criar metodo para avaliação de posicao certas, baseada no tamanho da rota registrada e calculo de ciclos 
+   * Com o metodo de calculo que valida a posicao com um array de booleanos, não é mais necessário essa função
+  public calculaPontuacao2(rota: number[][]): number {
+    let pontuacao: number = rota.length
+
+    return this.temCiclos(rota, pontuacao);
+  } */ 
+
+    /**
+    // função que verifica se há clicos na rota
+    private temCiclos(rota: number[][], aptidao : number): number {
+      let pontuacao : number = aptidao;
+      for (let linha = 0; linha < rota.length; linha++) {
+        for (let outraLinha = 0; outraLinha < rota.length; outraLinha++) {
+          if (linha !== outraLinha) {
+            let temCiclo: boolean = this.verificaArraysIguals(rota[linha],rota[outraLinha]);
+            if (temCiclo) {
+              pontuacao-= 3;  // penaliza caso for posição inválida
+            }
+          }
+        }
+      }
+      return Math.round(pontuacao)
+    }
+
+    */
+  
   /** (INUTILIZADA) agora com a validação direto no agente e o atributo booleano andou
    * Não é mais necessário fazer o calculo com esta função, pois o algoritmo não irá mais adicionar a parede a rota que será avaliada
   

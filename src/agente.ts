@@ -53,6 +53,16 @@ export class Agente {
     let andou : boolean = false;
     let proximaDirecao: string = this.getProximoGene();
 
+    /** Função que evita que a simulção ande para trás dependendo do ultimo movimento (bug)
+     *  comentada pois, na função de pontuação foi criado penelização para ciclos
+    if(this.posicaoGene > 0) {
+      if(this.getPosicaoContraria(proximaDirecao) === this.cromossomo.getGene(this.posicaoGene - 1)) {
+        this.caminhoInvalidado = true;
+        return;
+      }
+    }
+    */
+
     /** PARA TODAS AS DIREÇÕES É VALIDADO SE A POSIÇÃO É VÁLIDA PARA ENTÃO ALTERAR O VALOR DA COORDENADA DESSA SIMULAÇÃO*/
     if (proximaDirecao === ESQUERDA && this.labirinto.validaPosicao(this.coordenada_x, this.coordenada_y - 1)) {
           this.coordenada_y--;
@@ -84,6 +94,7 @@ export class Agente {
       this.rota.push([this.coordenada_x, this.coordenada_y]);
     } else {
         this.caminhoInvalidado = true;
+       // this.cromossomo.setGenesValidos(this.rota.length)
     }
   }
 
@@ -94,5 +105,26 @@ export class Agente {
 
   public getRota(): number[][] {
     return this.rota;
+  }
+
+  // Função usada para a simulação não ir para trás conforme ultima direção
+  public getPosicaoContraria(posicao : string) : string{
+    if('ESQUERDA') {
+      return 'DIREITA'
+    }
+
+    else if('DIREITA') {
+      return'ESQUERDA'
+    }
+
+    else if('CIMA') {
+      return 'BAIXO'
+    }
+
+    else if('BAIXO') {
+      return 'CIMA'
+    }
+    
+    return posicao
   }
 }

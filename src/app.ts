@@ -3,12 +3,12 @@ import { GeneticAlgorithm as AlgoritmoGenetico } from "./algortimoGenetico";
 import { Population as Populacao } from "./populacao";
 import { Cromossomo } from "./cromossomo";
 
-const numeroMaximoGeracoes: number = 1200
+const numeroMaximoGeracoes: number = 1000
 ;
 const labirinto = new Labirinto();
 
-const algoritmoGenetico = new AlgoritmoGenetico(200, 0.025, 0.9, 2, 8);
-let populacao: Populacao = algoritmoGenetico.iniciarPopulacao(128);
+const algoritmoGenetico = new AlgoritmoGenetico(200, 0.05, 0.9, 2, 25);
+let populacao: Populacao = algoritmoGenetico.iniciarPopulacao(130);
 
 algoritmoGenetico.avaliacao(labirinto, populacao)
 

@@ -10,6 +10,7 @@ const { CIMA: CIMA, BAIXO: BAIXO, ESQUERDA :ESQUERDA, DIREITA: DIREITA } = MOVIM
 export class Cromossomo {
   cromossomo: string[]; 
   aptidao: number = 0;
+  genesValidos: number = 0;
 
   constructor(tamanhoCromossomo?: number, cromossomo?: string[]) {
     this.cromossomo = [];
@@ -54,7 +55,16 @@ export class Cromossomo {
     return this.aptidao;
   }
 
-  public setAptidao(novaFitness: number) : void {
-    this.aptidao = novaFitness;
+  public setAptidao(novaAptidao: number) : void {
+    this.aptidao = novaAptidao;
+  }
+
+  public getGenesValidos(): number {
+    return this.genesValidos;
+  }
+
+  // posicao dos genes que são validos para o caminho da solução
+  public setGenesValidos(genesValidos: number) : void {
+    this.genesValidos = genesValidos;
   }
 }
