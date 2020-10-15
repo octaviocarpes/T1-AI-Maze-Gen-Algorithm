@@ -1,6 +1,6 @@
-export const MOVES = {
-  UP: 'UP',
-  DOWN: 'DOWN',
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
+export const MOVIMENTOS = {
+  CIMA: 'CIMA',
+  BAIXO: 'BAIXO',
+  ESQUERDA: 'ESQUERDA',
+  DIREITA: 'DIREITA',
 }
